@@ -1,0 +1,166 @@
+<!doctype html>
+<html>
+<head>
+  #include("./_inc/_header_resources.html")
+  <link rel="stylesheet" href="static/lib/highlight/styles/railscasts.css">
+</head>
+<body>
+
+<!--top begin-->
+#include("./_inc/_header.html")
+<!--top end-->
+
+<article>
+  <!--lbox begin-->
+  <div class="lbox">
+    <!--bloglist begin-->
+    <div class="content_box whitebg">
+      <!--  <h2 class="htitle"><span class="con_nav">您现在的位置是：<a href="/">网站首页</a>><a href="/">个人博客模板</a></span>个人博客模板</h2>-->
+      <h1 class="con_tilte">#(article.title ??)</h1>
+      <p class="bloginfo">
+        <i class="avatar"><img src="#(article.user.avatar ??)"></i>
+        <span>#(article.user.nickname ??)</span>
+        <span>#date(article.created, "yyyy-MM-dd")</span>
+        #articleCategories(article.id, "category")
+        #for(category : categories)
+        <span>【<a href="#(category.url ??)">#(category.title ??)</a>】</span>
+        #end
+        #end
+        <span>#(article.view_count ??)人已围观</span>
+      </p>
+      <!--  <p class="con_info"><b>简介</b>个人博客，用来做什么</p>-->
+      <div class="con_text">
+
+        #(article.content ??)
+
+        <p class="share"><b>说明：</b>本文内容由#(article.user.nickname ??)收集整理或者自己编写，如果存在侵权，请联系站长删除。</p>
+        <p><span class="diggit">吐槽(#(article.comment_count ??))</span></p>
+        <div class="nextinfo">
+          #previousArticle()
+          <p>上一篇：<a href="#(previous.url ??)">#(previous.title ??)</a></p>
+          #end
+          #nextArticle()
+          <p>下一篇：<a href="#(next.url ??)">#(next.title ??)</a></p>
+          #end
+        </div>
+      </div>
+    </div>
+    #relevantArticles(article)
+    <div class="whitebg">
+      <h2 class="htitle">相关文章</h2>
+      <ul class="otherlink">
+        #for(article : relevantArticles)
+        <li><a href="#(article.url ??)" title="#(article.title ??)">#(article.title ??)</a></li>
+        #end
+      </ul>
+    </div>
+    #end
+
+    <div class="whitebg gbook">
+      <h2 class="htitle">文章评论</h2>
+      <ul>
+        <form id="commentForm" action="#(CPATH)/article/postComment" method="post">
+          <input type="hidden" name="articleId" value="#(article.id)">
+          <input type="hidden" name="pid" id="pid">
+          <div class="plpost">
+            <p class="saying"><span>共有#(article.comment_count ??)条评论</span></p>
+            #if(option('article_comment_vcode_enable'))
+            <p class="yzm"><span>验证码:</span>
+              <input name="captcha" type="text" size="16">
+              <img src="/commons/captcha" onclick="this.src='#(CPATH)/commons/captcha?d='+Math.random();" title="看不清楚,点击刷新">
+            </p>
+            #end
+            <textarea id="content" name="content" rows="6"></textarea>
+            <input type="submit" value="提交">
+          </div>
+        </form>
+        <div class="comment-list" id="allComment">
+        #commentPage()
+        #for(comment : commentPage.list)
+        <div class="fb">
+          <ul>
+            <p class="fbtime"><span>#date(comment.created)</span> #(comment.author ?? '匿名网友')</p>
+            #if(comment.parent != null)
+            <p class="fbinfo"></p>
+            <div class="ecomment">
+              <span class="ecommentauthor"> #(comment.parent.author ?? '匿名') 的原文：</span>
+              <p>#(comment.parent.content ??)</p>
+            </div>
+            #end
+            #(comment.content ??)
+          </ul>
+        </div>
+        #end
+        #end
+        </div>
+
+        #commentPaginate(anchor="allComment")
+        <!--pagelist-->
+        <div class="pagelist">
+          #for(page : pages)
+          #if(page.style == "active")
+          <b>#(page.text ??)</b>
+          #else
+          <a href="#(page.url ??)">#(page.text ??)</a>&nbsp;
+          #end
+          #end
+        </div>
+        <!--pagelist end-->
+        #end
+      </ul>
+    </div>
+    <!--bloglist end-->
+  </div>
+  <!--lbox end-->
+
+  <!--rbox begin-->
+  <div class="rbox">
+    <div class="whitebg toc">
+      <h2 class="htitle">文章目录</h2>
+      <div class="toc-content">
+      </div>
+    </div>
+  </div>
+  <!--rbox end-->
+</article>
+
+<!--footer begin-->
+#include("./_inc/_footer.html")
+<!--footer end-->
+
+<script src="static/lib/jquery-toc/jquery.toc.min.js"></script>
+<script src="static/js/jquery.form.min.js"></script>
+<script>
+  $('.toc-content').initTOC({
+    selector: 'h1, h2, h3, h4, h5, h6',
+    scope: '.con_text',
+    overwrite: false,
+    prefix: 'toc'
+  });
+
+  $('#commentForm').on('submit', function () {
+    $(this).ajaxSubmit({
+      type: "post",
+      success: function (data) {
+        if (data.state == "ok") {
+          location.href = location.href.indexOf("#allComment") > 0 ? location.href : location.href+"#allComment";
+          location.reload()
+        } else {
+          alert('评论失败：' + data.message);
+          if (data.errorCode == 9) {
+            location.href = '#(CPATH)/user/login';
+          }
+        }
+        $('#content').val('');
+      },
+      error: function () {
+        alert("网络错误，请稍后重试");
+      }
+    });
+    return false;
+  });
+</script>
+<script src="static/lib/highlight/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+</body>
+</html>

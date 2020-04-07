@@ -1,0 +1,14 @@
+#include("./_inc/_layout.html")
+#@layout()
+#define link()
+<link rel="stylesheet" href="static/lib/highlight/styles/railscasts.css">
+#end
+#define script()
+<script src="static/lib/highlight/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+#end
+#define content()
+<div class="content_box whitebg">
+  #(page.content ??)
+</div>
+#end

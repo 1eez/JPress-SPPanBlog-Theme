@@ -1,0 +1,37 @@
+#define layout()
+<!--<!doctype html>-->
+<html>
+<head>
+    #include("./_header_resources.html")
+    #@link?()
+</head>
+<body>
+
+<!--top begin-->
+#include("./_header.html")
+<!--top end-->
+
+<article>
+    <!--lbox begin-->
+    <div class="lbox">
+        <!--bloglist begin-->
+        #@content()
+        <!--bloglist end-->
+    </div>
+    <!--lbox end-->
+
+    <!--rbox begin-->
+    <div class="rbox">
+        #include("./_right_list.html")
+    </div>
+    <!--rbox end-->
+</article>
+
+<!--footer begin-->
+#include("./_footer.html")
+<!--footer end-->
+
+#@script?()
+</body>
+</html>
+#end

@@ -1,0 +1,54 @@
+#include("./_inc/_layout.html")
+#@layout()
+#define content()
+<div class="whitebg bloglist">
+  <h2 class="htitle">搜索：<span style="color: red">#(keyword ??)</span></h2>
+  #articleSearchPage(pageSize=5)
+  <ul>
+    #for(article : articlePage.list)
+    <li>
+      <h3 class="blogtitle">
+        <a href="#(article.url ??)" target="_blank">#(article.title ??)</a>
+      </h3>
+      <span class="blogpic imgscale">
+        <!--<i><a href="/">原创模板</a></i>-->
+        <a href="#(article.url ??)" title="">
+          #if(article.showImage != null)
+          <img src="#(article.showImage)" alt="">
+          #elseif(option('sppan_blog_random_pic') != null)
+          <img src="#option('sppan_blog_random_pic')?id=#(article.id)" alt="">
+          #else
+          #end
+        </a>
+      </span>
+      <p class="blogtext">#maxLength(article.text, 185)</p>
+      <p class="bloginfo">
+        <i class="avatar"><img src="#(article.user.avatar ??)"></i>
+        <span>#(article.user.nickname ??)</span>
+        <span>#date(article.created, "yyyy-MM-dd")</span>
+        #articleCategories(article.id, "category")
+        #for(category : categories)
+        <span>【<a href="#(category.url ??)">#(category.title ??)</a>】</span>
+        #end
+        #end
+      </p>
+      <a href="#(article.url ??)" class="viewmore">阅读更多</a>
+    </li>
+    #end
+  </ul>
+  #articleSearchPaginate()
+  <!--pagelist-->
+  <div class="pagelist">
+    #for(page : pages)
+    #if(page.style == "active")
+      <b>#(page.text ??)</b>
+    #else
+      <a href="#(page.url ??)">#(page.text ??)</a>&nbsp;
+    #end
+    #end
+  </div>
+  <!--pagelist end-->
+  #end
+  #end
+</div>
+#end

@@ -1,0 +1,38 @@
+<header id="header">
+    <div class="navbox">
+        <h2 id="mnavh"><span class="navicon"></span></h2>
+        <div class="logo"><a href="/">#(WEB_NAME ??)</a></div>
+        <nav>
+            <ul id="starlist">
+                #for(menu : MENUS)
+                    #if(menu.hasChild())
+                    <li class="menu">
+                        <a href="#(menu.url == null ? 'javascript:;':menu.url)">#(menu.text ??)</a>
+                        <ul class="sub">
+                            #for(childMenu : menu.getChilds())
+                            <li><a href="#(childMenu.url ??)">#(childMenu.text ??)</a></li>
+                            #end
+                        </ul>
+                        <span></span>
+                    </li>
+                    #else
+                        <li><a href="#(menu.url == null ? 'javascript:;':menu.url)">#(menu.text ??)</a></li>
+                    #end
+                #end
+            </ul>
+        </nav>
+        <div class="searchico"></div>
+    </div>
+</header>
+<div class="searchbox">
+    <div class="search">
+        <form action="/article/search" method="post" name="searchform" id="searchform">
+            <input name="keyword" id="keyword" class="input_text" value="请输入关键字词" style="color: rgb(153, 153, 153);" onfocus="if(value=='请输入关键字词'){this.style.color='#000';value=''}" onblur="if(value==''){this.style.color='#999';value='请输入关键字词'}" type="text">
+<!--            <input name="show" value="title" type="hidden">-->
+<!--            <input name="tempid" value="1" type="hidden">-->
+<!--            <input name="tbname" value="news" type="hidden">-->
+            <input name="Submit" class="input_submit" value="搜索" type="submit">
+        </form>
+    </div>
+    <div class="searchclose"></div>
+</div>

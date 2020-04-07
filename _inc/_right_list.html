@@ -1,0 +1,44 @@
+#articles(orderBy="view_count DESC",count=6)
+<div class="whitebg paihang">
+    <h2 class="htitle">点击排行</h2>
+<!--    <section class="topnews imgscale"><a href="/"><img src="static/images/h1.jpg"><span>6条网页设计配色原则,让你秒变配色高手</span></a></section>-->
+    <ul>
+        #for(article : articles)
+        <li><i></i><a href="#(article.url)">#(article.title)</a></li>
+        #end
+    </ul>
+</div>
+#end
+
+#tags(orderBy="count DESC")
+<div class="whitebg cloud">
+    <h2 class="htitle">标签云</h2>
+    <ul>
+        #for(tag : tags)
+        <a href="#(tag.url)" target="_blank">#(tag.title)</a>
+        #end
+    </ul>
+</div>
+#end
+
+#articles(orderBy="created DESC", count=6)
+<div class="whitebg tuijian">
+    <h2 class="htitle">最新推荐</h2>
+<!--    <section class="topnews imgscale"><a href="/"><img src="static/images/h2.jpg"><span>6条网页设计配色原则,让你秒变配色高手</span></a></section>-->
+    <ul>
+        #for(article : articles)
+        <li>
+            <a href="#(article.url)">
+                #if(article.showImage != null)
+                    <i><img src="#(article.showImage)"></i>
+                #elseif(option('sppan_blog_random_pic') != null)
+                    <i><img src="#option('sppan_blog_random_pic')?id=#(article.id)" alt=""></i>
+                #else
+                #end
+                <p>#(article.title)</p>
+            </a>
+        </li>
+        #end
+    </ul>
+</div>
+#end

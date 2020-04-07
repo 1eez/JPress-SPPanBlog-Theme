@@ -1,0 +1,33 @@
+<!doctype html>
+<html>
+<head>
+    #include("./_inc/_header_resources.html")
+
+    <script src="static/js/page.js"></script>
+</head>
+<body>
+<!--top begin-->
+#include("./_inc/_header.html")
+<!--top end-->
+
+#articles(count=99999999, orderBy="created DESC")
+<article>
+    <div class="whitebg timebox">
+        <h2 class="htitle">往期文章</h2>
+        <ul id="list" style="display:none;">
+            #for(article : articles)
+            <li><span>#date(article.created, "yyyy-MM-dd")</span><i><a href="#(article.url ??)" target="_blank">#(article.title ??)</a></i></li>
+            #end
+        </ul>
+        <ul id="list2">
+        </ul>
+        <div class="clear"></div>
+        <script src="static/js/page2.js"></script>
+    </div>
+</article>
+#end
+<!--footer begin-->
+#include("./_inc/_footer.html")
+<!--footer end-->
+</body>
+</html>
